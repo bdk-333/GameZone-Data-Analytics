@@ -1,6 +1,6 @@
 # Data Cleaning technique
 
-```markdown
+```
 ## Plan for data cleaning:
 
 In this cleaning process, I'll be using the **"CLEAN"** approach.
