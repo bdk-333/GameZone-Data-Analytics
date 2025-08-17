@@ -1,6 +1,5 @@
 # Data Cleaning technique
 
-```markdown
 ## Plan for data cleaning:
 
 In this cleaning process, I'll be using the **"CLEAN"** approach.
@@ -23,5 +22,3 @@ In this cleaning process, I'll be using the **"CLEAN"** approach.
     - We keep a record of our cleaning at every step, so that others or even our future self can understand what we did and how. It builds trust in your process and transparency.
     - We note our actions ('A') and issues we find in the ('L' and 'E') steps, for example filled 50 missing values in a column with unknown, or 1000 rows are missing purchase date, kept it but didn't include it for time series analysis, etc.
     - Through the cleaning process, we keep an issue log, where we write any issues we find, it's magnitude (what percent of data is affected), ideas of how it can be solved, resolution, etc. 
-
-```
