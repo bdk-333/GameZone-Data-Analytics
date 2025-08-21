@@ -39,8 +39,8 @@ The data cleaning phase aimed to prepare the Game Zone orders dataset for analys
 #### **Prices**
 
 - Detected 5 missing prices and 29 orders with $0 price.
-- Decided not to fill missing prices due to their negligible impact.
-- Kept $0 prices but documented the option to fill them with product averages.
+- Decided to fill those missing prices using the average of the product price around the date or purchase.
+- Replaced $0 prices with the average price of the products around the purchase date.
 
 #### **Other Columns**
 
@@ -77,7 +77,7 @@ The data cleaning phase aimed to prepare the Game Zone orders dataset for analys
 
 ### Summary
 
-The data cleaning process ensured a reliable, consistent, and enriched dataset for analysis. All major issues were addressed, and remaining minor issues were documented. The dataset is now ready for exploratory data analysis (EDA).
+The data cleaning process ensured a reliable and consistent dataset for analysis. All major issues were addressed, and remaining minor issues were documented. The dataset is now ready for exploratory data analysis (EDA).
 
 ## Exploratory Data Analysis (EDA) Report
 
@@ -98,8 +98,8 @@ The EDA phase explored the cleaned Game Zone dataset to uncover trends, patterns
 
 - Created a pivot table to summarize total sales by product and month.
 - Calculated overall total sales: **$5,542,945.59** from Jan 2019 to Feb 2021.
-- Identified the most popular products: **27in 4K gaming monitor**, **Nintendo Switch**, and **Sony PlayStation 5 bundle**.
-- Noted least popular products: **Razer Pro Gaming Headset**, **Dell Gaming Mouse**, **Acer Nitro laptop**.
+- Identified the most popular products by sales (USD): **27in 4K gaming monitor**, **Nintendo Switch**, and **Sony PlayStation 5 bundle**.
+- Noted least popular products by sales: **Razer Pro Gaming Headset**, **Dell Gaming Mouse**, **Acer Nitro laptop**.
 
 ---
 
@@ -113,7 +113,7 @@ The EDA phase explored the cleaned Game Zone dataset to uncover trends, patterns
 
 ### 4. Regional Analysis
 
-- Grouped sales by region, finding that **Americas** and **Europe** were the strongest markets.
+- Grouped sales by region, finding that **Americas** and **Europe** were the strongest markets for our products.
 - Observed that regional sales trends closely matched overall and product-specific trends.
 
 ---
@@ -134,21 +134,15 @@ The EDA phase explored the cleaned Game Zone dataset to uncover trends, patterns
 
 ---
 
-### 7. Data Quality Observations
-
-- Noted missing data for some products (e.g., Razer gaming headset, Dell gaming mouse) and documented its impact.
-- Checked for outliers and data consistency in key metrics.
-
----
-
-### 8. Key Insights
+### 7. Key Insights
 
 - Sales growth was global across products and regions, especially during the COVID-19 period.
-- Direct marketing is highly effective; other channels have room for improvement.
+- Direct marketing is highly effective, other channels have room for improvement.
 - Product pricing is generally stable, with some exceptions.
+- However, the last few months show negative trends in sales.
 
 ---
 
 ### Conclusion
 
-The EDA provided a comprehensive understanding of sales performance, product and regional trends, and marketing effectiveness. These insights set the stage for deeper analysis, modeling, or business recommendations.
+The EDA provided a comprehensive understanding of sales performance, product and regional trends, and marketing effectiveness. These insights set the stage for deeper analysis or modeling.
