@@ -1,40 +1,154 @@
-# Data Cleaning technique
+# Game Zone Data Analytics Project
 
-## Plan for data cleaning
+## Data Cleaning Report
 
-In this cleaning process, I'll be using the **"CLEAN"** approach.
+### Overview
 
-1. **C**: Conceptualize the Data.
-    - This means understant the date. What each row represents in your data or table? Which are the quantitative features and which are the qualitative features, which features is or could be the target of the analysis? Which features aren't that important in the analysis?, etc.
-2. **L**: Locate Solvable Problems.
-    - This is the first pass of data cleaning, here we try to find and fix the "low-hanging fruits", meaning the obvious errors that we can quickly notice and deal with.
-    - It includes going through each features and checking for inconsistencies like spelling (USA vs United States vs America), data formatting (12-12-12 vs 12/12/12), leading or trailing characters or spaces (e.g., ---monitors----, "   bike ", etc.), checking for missing values, duplicate values, checking data types, etc.
-3. **E**: Evaluate Unsolvable issues.
-    - In this step we try to deal with the issues that are not so easy to deal with like handling missing data. In this case, we can either keep it as it is, or impute it.
-        - Most probably for the analysis step we keep the data as it is and not impute it, because imputing data introduces bias which could be mislead the analysis.
-        - However, we can still impute if we have a truth source, for example if the product price is missing, we can filter the price from another, say products, for the purchase data because we have recorded the product data into another table.
-    - Investigate outliers. Is these rows genuine or just an entry error? In most cases we keep the outliers if they are actually genuine.
-    - And for the problems that we can't solve, we flag it. Meaning that if in the data we find all the data missing from Dec, and we have no way of accessing that data, we flag it as an issue, e.g., to the stakeholder.
-4. **A**: Augment the data.
-    - Now that we have cleaned data, we try to make it more powerful for analysis by creating new features using the ones we already have.
-    - For example, we have purchase data, from this we can create purchase year, month and day. If we have age, we can create age groups like teenagers, young adults, adults, etc. If we have country code, we can use a lookup table and create a region table, etc.
-5. **N**: Note and document.
-    - We keep a record of our cleaning at every step, so that others or even our future self can understand what we did and how. It builds trust in your process and transparency.
-    - We note our actions ('A') and issues we find in the ('L' and 'E') steps, for example filled 50 missing values in a column with unknown, or 1000 rows are missing purchase date, kept it but didn't include it for time series analysis, etc.
-    - Through the cleaning process, we keep an issue log, where we write any issues we find, it's magnitude (what percent of data is affected), ideas of how it can be solved, resolution, etc.
+The data cleaning phase aimed to prepare the Game Zone orders dataset for analysis. I followed the **CLEAN** framework: Conceptualize, Locate issues, Evaluate unsolvable problems, Augment the data, and Note/document all steps.
 
-# EDA Technique
+---
 
-## Plan for EDA - SCAN framework
+### 1. Conceptualize the Data
 
-1. **S**: Stakeholder goals. What KPIs and dimensions matter the most?
-2. **C**: Columns and coverage. What data do we available and how to use it?
-3. **A**: Aggregates and anomalies. Thie high level metrics, outliers, and unexpected patterns.
-4. **N**: Notable segments. Slice by category, time or other key dimensions to surface early insights
+- Loaded the raw dataset from Excel.
+- Inspected the data structure (`df.info()`), noting ~22,000 orders and key columns such as `ORDER_ID`, `USER_ID`, `USD_PRICE`, `PURCHASE_TS`, `SHIP_TS`, `PRODUCT_NAME`, `MARKETING_CHANNEL`, and `COUNTRY_CODE`.
+- Identified `USD_PRICE` as the main metric for analysis.
+- Flagged columns needing type conversion (e.g., `PURCHASE_TS` to datetime).
 
+---
 
+### 2. Locate and Fix Issues
 
+#### **User and Order IDs**
 
+- Checked uniqueness of `USER_ID` and found ~91% unique users.
+- Detected 145 duplicate `ORDER_ID`s, investigated them, and confirmed they were exact duplicates.
+- Removed duplicate orders to ensure data integrity.
 
+#### **Timestamps**
 
+- Converted `PURCHASE_TS` and `SHIP_TS` to datetime.
+- Identified 5 missing purchase dates and a small number of missing ship dates.
+- Noted some orders where ship date precedes purchase date (data entry errors).
 
+#### **Product Names**
+
+- Found 8 unique products, with Nintendo Switch being the most popular.
+- Corrected spelling inconsistencies (e.g., "27inches 4k gaming monitor" to "27in 4K gaming monitor").
+
+#### **Prices**
+
+- Detected 5 missing prices and 29 orders with $0 price.
+- Decided not to fill missing prices due to their negligible impact.
+- Kept $0 prices but documented the option to fill them with product averages.
+
+#### **Other Columns**
+
+- Checked for missing values in `PURCHASE_PLATFORM`, `MARKETING_CHANNEL`, `ACCOUNT_CREATION_METHOD`, and `COUNTRY_CODE`.
+- Filled missing `MARKETING_CHANNEL` and `ACCOUNT_CREATION_METHOD` with 'unknown' category.
+
+#### **Data Consistency**
+
+- Found ~2,000 orders with ship date before purchase date, likely due to data entry mistakes.
+- Calculated average negative time to ship and documented the issue.
+
+---
+
+### 3. Evaluate Unsolvable Issues
+
+- Remaining issues: missing purchase dates, missing country codes, and inconsistent shipping dates.
+- Decided to keep these rows due to their small magnitude and lack of external data for correction.
+
+---
+
+### 4. Augment the Data
+
+- Engineered new features: purchase and ship year, month, day, weekday, and time to ship (in hours).
+- Mapped country codes to regions using an external lookup table and merged region info into the dataset.
+
+---
+
+### 5. Final Steps
+
+- Filtered out rows with negative time to ship for the final cleaned dataset.
+- Saved the cleaned data to CSV for further analysis.
+
+---
+
+### Summary
+
+The data cleaning process ensured a reliable, consistent, and enriched dataset for analysis. All major issues were addressed, and remaining minor issues were documented. The dataset is now ready for exploratory data analysis (EDA).
+
+## Exploratory Data Analysis (EDA) Report
+
+### EDA Overview
+
+The EDA phase explored the cleaned Game Zone dataset to uncover trends, patterns, and actionable insights. The analysis focused on sales metrics, product and regional performance, time-based trends, and marketing channels.
+
+---
+
+### 1. Initial Exploration
+
+- Loaded the cleaned dataset and reviewed its structure and key columns.
+- Confirmed data types and checked for any remaining missing values.
+
+---
+
+### 2. Sales Summary
+
+- Created a pivot table to summarize total sales by product and month.
+- Calculated overall total sales: **$5,542,945.59** from Jan 2019 to Feb 2021.
+- Identified the most popular products: **27in 4K gaming monitor**, **Nintendo Switch**, and **Sony PlayStation 5 bundle**.
+- Noted least popular products: **Razer Pro Gaming Headset**, **Dell Gaming Mouse**, **Acer Nitro laptop**.
+
+---
+
+### 3. Sales Over Time
+
+- Analyzed monthly sales trends, revealing a significant increase in sales from late 2019 through 2020, peaking in December 2020.
+- Visualized sales by product, showing that all major products followed the overall sales trend.
+- Identified January 2020 as the month with the least sales (~$86k) and December 2020 as the peak (~$500k).
+
+---
+
+### 4. Regional Analysis
+
+- Grouped sales by region, finding that **Americas** and **Europe** were the strongest markets.
+- Observed that regional sales trends closely matched overall and product-specific trends.
+
+---
+
+### 5. Marketing Channel Analysis
+
+- Explored sales by marketing channel for top products.
+- Found that the **Direct** channel was dominant, with most users ordering directly from the website.
+- Identified potential for growth in **Email** and **Affiliate** channels.
+
+---
+
+### 6. Metric Decomposition
+
+- Broke down sales into **Order Count** and **Average Order Value (AOV)** by product and month.
+- Found that order counts and AOV trends aligned with overall sales patterns.
+- Noted that some products (e.g., Sony PlayStation bundle, Acer laptop) showed more price fluctuation over time.
+
+---
+
+### 7. Data Quality Observations
+
+- Noted missing data for some products (e.g., Razer gaming headset, Dell gaming mouse) and documented its impact.
+- Checked for outliers and data consistency in key metrics.
+
+---
+
+### 8. Key Insights
+
+- Sales growth was global across products and regions, especially during the COVID-19 period.
+- Direct marketing is highly effective; other channels have room for improvement.
+- Product pricing is generally stable, with some exceptions.
+
+---
+
+### Conclusion
+
+The EDA provided a comprehensive understanding of sales performance, product and regional trends, and marketing effectiveness. These insights set the stage for deeper analysis, modeling, or business recommendations.
